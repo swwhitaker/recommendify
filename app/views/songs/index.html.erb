@@ -1,25 +1,32 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Songs</h1>
+<div class="song_container">
+<h1>Recommended Songs</h1>
+
+<%= link_to 'Recommend a New Song', new_song_path, id: 'new-song-link' %>
 
 <table>
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <td><h3><%= sort_link(@q, :title) %></h3></td>
+      <td><h3><%= sort_link(@q, :artist) %></h3></td>
+      <td><h3><%= sort_link(@q, :recommender) %></h3></td>
     </tr>
   </thead>
 
   <tbody>
     <% @songs.each do |song| %>
       <tr>
-        <td><%= link_to 'Show', song %></td>
-        <td><%= link_to 'Edit', edit_song_path(song) %></td>
-        <td><%= link_to 'Destroy', song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td> <%= song.title.titlecase %> </td>
+        <td> by <%= song.artist.titlecase %> </td>
+        <td> from <%= song.recommender.titlecase %> </td>
+        <td class="td_link"> <%= link_to 'Show', song %></td>
+        <!-- <td class="td_link"> <%= link_to 'Edit', edit_song_path(song) %></td> -->
+        <td class="td_link"><%= link_to 'Delete', song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Song', new_song_path %>
+<%= render 'search_form' %>

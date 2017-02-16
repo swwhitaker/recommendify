@@ -1,15 +1,20 @@
 class SongsController < ApplicationController
+  include HTTParty
   before_action :set_song, only: [:show, :edit, :update, :destroy]
 
   # GET /songs
   # GET /songs.json
+  # This is where that Ransack magic happens!!
   def index
-    @songs = Song.all
+    # @songs = Song.all
+    @q = Song.ransack(params[:q])
+    @songs = @q.result(distinct: true)
   end
 
   # GET /songs/1
   # GET /songs/1.json
   def show
+    @song = Song.find(params[:id])
   end
 
   # GET /songs/new
@@ -24,12 +29,22 @@ class SongsController < ApplicationController
   # POST /songs
   # POST /songs.json
   def create
-    @song = Song.new(song_params)
+    @song = Song.new(artist: song_params[:artist],title: song_params[:title], recommender: song_params[:recommender], color: song_params[:color] )
+
 
     respond_to do |format|
       if @song.save
+        p @song 
         format.html { redirect_to @song, notice: 'Song was successfully created.' }
         format.json { render :show, status: :created, location: @song }
+        HTTParty.post("https://maker.ifttt.com/trigger/recommend_song/with/key/#{ENV["IFTT_KEY"]}",{ 
+          :body => { "value1" => "#{@song.artist}", "value2" => "#{@song.title}", "value3" => "#{@song.recommender}" }.to_json,
+          :headers => { 'Content-Type' => 'application/json', 'Accept' => 'application/json'}
+        })
+        #   HTTParty.post("https://maker.ifttt.com/trigger/change_color/with/key/cyr9vRP_Ic-ezSabCIGWhX",{ 
+        #   :body => { "value1" => "#{@song.color}" }.to_json,
+        #   :headers => { 'Content-Type' => 'application/json', 'Accept' => 'application/json'}
+        # })
       else
         format.html { render :new }
         format.json { render json: @song.errors, status: :unprocessable_entity }

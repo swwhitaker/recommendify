@@ -1,4 +1,13 @@
 <p id="notice"><%= notice %></p>
+<div class="song_container">
+
+<h2><%= @song.title %></h2>
+<h3> by <%= @song.artist %></h3>
+<p>A big thanks to <%= @song.recommender %> for recommending this song!</p> 
+<h4>Recommended color pairing: 
+<div class="song_color" style="background-color: <%= @song.color %>; "> <%= @song.color %>
+</div></h4>
 
 <%= link_to 'Edit', edit_song_path(@song) %> |
 <%= link_to 'Back', songs_path %>
+</div>

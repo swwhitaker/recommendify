@@ -1,0 +1,9 @@
+
+ <%= search_form_for @q do |f| %>
+ 
+  <%= f.label :recommender_or_artist_or_color_or_title_cont, 'Search by Artist, Title, Recommender, or Color' %>
+  <%= f.search_field :recommender_or_artist_or_color_or_title_cont %>
+
+  <%= f.submit value: 'Search Recommended Songs' %>
+<% end %>
+

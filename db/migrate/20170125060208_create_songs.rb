@@ -3,7 +3,7 @@ class CreateSongs < ActiveRecord::Migration[5.0]
     create_table :songs do |t|
       t.string :title
       t.string :artist
-      t.string :recommendor
+      t.string :recommender
       t.string :color
 
       t.timestamps
