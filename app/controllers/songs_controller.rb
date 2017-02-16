@@ -37,14 +37,14 @@ class SongsController < ApplicationController
         p @song 
         format.html { redirect_to @song, notice: 'Song was successfully created.' }
         format.json { render :show, status: :created, location: @song }
-        HTTParty.post("https://maker.ifttt.com/trigger/recommend_song/with/key/#{ENV["IFTT_KEY"]}",{ 
+        HTTParty.post("https://maker.ifttt.com/trigger/recommend_song/with/key/#{ENV["IFTTT_SPOTIFY_KEY"]}",{ 
           :body => { "value1" => "#{@song.artist}", "value2" => "#{@song.title}", "value3" => "#{@song.recommender}" }.to_json,
           :headers => { 'Content-Type' => 'application/json', 'Accept' => 'application/json'}
         })
-        #   HTTParty.post("https://maker.ifttt.com/trigger/change_color/with/key/cyr9vRP_Ic-ezSabCIGWhX",{ 
-        #   :body => { "value1" => "#{@song.color}" }.to_json,
-        #   :headers => { 'Content-Type' => 'application/json', 'Accept' => 'application/json'}
-        # })
+          HTTParty.post("https://maker.ifttt.com/trigger/change_color/with/key/#{IFTTT_HUE_KEY}",{ 
+          :body => { "value1" => "#{@song.color}" }.to_json,
+          :headers => { 'Content-Type' => 'application/json', 'Accept' => 'application/json'}
+        })
       else
         format.html { render :new }
         format.json { render json: @song.errors, status: :unprocessable_entity }
